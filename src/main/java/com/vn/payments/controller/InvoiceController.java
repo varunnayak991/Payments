@@ -1,10 +1,11 @@
 package com.vn.payments.controller;
 
 import com.vn.payments.entity.Invoice;
+import com.vn.payments.entity.Payment;
 import com.vn.payments.serivce.InvoiceService;
+import com.vn.payments.serivce.PaymentService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,6 +18,9 @@ public class InvoiceController {
 
     @Autowired
     InvoiceService invoiceService;
+
+    @Autowired
+    PaymentService paymentService;
 
     @PostMapping("/invoice")
     @Operation(summary = "Create an invoice", description = "Create a new invoice.")
@@ -41,4 +45,15 @@ public class InvoiceController {
         invoiceService.deleteInvoice(invoiceId);
     }
 
+    @PostMapping("/invoice/{invoiceId}/payments")
+    @Operation(summary = "Create an Payment", description = "Create a payment against an Invoice.")
+    public @ResponseBody Payment postPayment(@RequestBody Payment payment, @PathVariable UUID invoiceId) throws IllegalArgumentException{
+       return paymentService.createPayment(invoiceId,payment);
+    }
+
+    @GetMapping("/invoice/{invoiceId}/payments")
+    @Operation(summary = "Gets Payment for an ivoice", description = "Gets  payment against an Invoice.")
+    public @ResponseBody Payment getAllPayments(@PathVariable UUID invoiceId){
+        return paymentService.getPayment(invoiceId);
+    }
 }
