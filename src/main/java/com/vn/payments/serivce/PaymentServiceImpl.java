@@ -49,34 +49,47 @@ public class PaymentServiceImpl implements PaymentService {
         if(updatedRemaining.floatValue() < 0 ) throw new IllegalArgumentException("Incorrect amount paid, remaining:"+remaining+", Invoice Id:"+ invoiceId);
 
         if(updatedRemaining.floatValue() > 0 ) {
+            /*
             invoice.setPaidAmount(updatedPaid);
-            invoice.setStatus(Invoice.Status.VOID);
-            invoice.setPayment(payment);
-            invoiceRepository.save(invoice);
             Invoice newInvoice = new Invoice();
             newInvoice.setStatus(Invoice.Status.PENDING);
             newInvoice.setAmount(updatedRemaining);
             newInvoice.setDueDate(LocalDate.now());
             invoiceRepository.save(newInvoice);
+            */
+            invoice.setPaidAmount(updatedPaid);
+            invoice.setStatus(Invoice.Status.PENDING);
+
+            payment.setInvoice(invoice);
+            paymentRepository.save(payment);
+
+            List<Payment> payments = invoice.getPayments();
+                    payments.add(payment);
+            invoice.setPayments(payments);
+            invoiceRepository.save(invoice);
         }
         else if(updatedRemaining.floatValue() == 0 ) {
+            payment.setInvoice(invoice);
+            paymentRepository.save(payment);
+
+            List<Payment> payments = invoice.getPayments();
+            payments.add(payment);
             invoice.setPaidAmount(updatedPaid);
             invoice.setStatus(Invoice.Status.PAID);
             invoiceRepository.save(invoice);
         }
 
-        payment.setInvoice(invoice);
-        paymentRepository.save(payment);
+
         return payment;
     }
 
 
-    public Payment getPayment(UUID invoiceId) throws IllegalArgumentException {
+    public List<Payment> getPayment(UUID invoiceId) throws IllegalArgumentException {
 
         Invoice invoice = invoiceRepository.findById(invoiceId)
                 .orElseThrow(() -> new IllegalArgumentException("Invoice not found with ID: " + invoiceId));
 
-        return invoice.getPayment();
+        return invoice.getPayments();
 
     }
 }

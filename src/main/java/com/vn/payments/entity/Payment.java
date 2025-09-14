@@ -20,7 +20,7 @@ public class Payment {
     @GeneratedValue(generator = "UUID")
     private UUID paymentId;
 
-    @OneToOne
+    @ManyToOne
     @JsonBackReference
     private Invoice invoice;
 

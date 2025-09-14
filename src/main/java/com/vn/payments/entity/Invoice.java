@@ -36,8 +36,8 @@ public class Invoice {
 
     private Status status = Status.PENDING;
 
-    @OneToOne
-    private Payment payment;
+    @OneToMany
+    private List<Payment> payments;
 
     public enum Status{
         PENDING("pending"),
@@ -94,11 +94,11 @@ public class Invoice {
         this.status = status;
     }
 
-    public Payment getPayment() {
-        return payment;
+    public List<Payment> getPayments() {
+        return payments;
     }
 
-    public void setPayment(Payment payment) {
-        this.payment = payment;
+    public void setPayments(List<Payment> payments) {
+        this.payments = payments;
     }
 }

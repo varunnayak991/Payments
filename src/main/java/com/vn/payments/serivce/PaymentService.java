@@ -9,6 +9,6 @@ public interface PaymentService {
 
     public Payment createPayment(UUID invoiceId, Payment payment);
 
-    public Payment getPayment(UUID invoiceId);
+    public List<Payment> getPayment(UUID invoiceId);
 
 }

@@ -53,7 +53,7 @@ public class InvoiceController {
 
     @GetMapping("/invoice/{invoiceId}/payments")
     @Operation(summary = "Gets Payment for an ivoice", description = "Gets  payment against an Invoice.")
-    public @ResponseBody Payment getAllPayments(@PathVariable UUID invoiceId){
+    public @ResponseBody List<Payment> getAllPayments(@PathVariable UUID invoiceId){
         return paymentService.getPayment(invoiceId);
     }
 }
