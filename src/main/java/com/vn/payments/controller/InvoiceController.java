@@ -1,6 +1,7 @@
 package com.vn.payments.controller;
 
 import com.vn.payments.entity.Invoice;
+import com.vn.payments.entity.Overdue;
 import com.vn.payments.entity.Payment;
 import com.vn.payments.serivce.InvoiceService;
 import com.vn.payments.serivce.PaymentService;
@@ -55,5 +56,11 @@ public class InvoiceController {
     @Operation(summary = "Gets Payment for an ivoice", description = "Gets  payment against an Invoice.")
     public @ResponseBody List<Payment> getAllPayments(@PathVariable UUID invoiceId){
         return paymentService.getPayment(invoiceId);
+    }
+
+    @GetMapping("/invoice/process-overdue")
+    @Operation(summary = "Process overdue invoices", description = "Processes all the overdue invoices, applies fees and pushes days")
+    public @ResponseBody List<Invoice> processOverdue(Overdue overdue){
+        return invoiceService.processOverdue(overdue);
     }
 }

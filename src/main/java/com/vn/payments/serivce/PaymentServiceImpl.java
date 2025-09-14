@@ -49,14 +49,7 @@ public class PaymentServiceImpl implements PaymentService {
         if(updatedRemaining.floatValue() < 0 ) throw new IllegalArgumentException("Incorrect amount paid, remaining:"+remaining+", Invoice Id:"+ invoiceId);
 
         if(updatedRemaining.floatValue() > 0 ) {
-            /*
-            invoice.setPaidAmount(updatedPaid);
-            Invoice newInvoice = new Invoice();
-            newInvoice.setStatus(Invoice.Status.PENDING);
-            newInvoice.setAmount(updatedRemaining);
-            newInvoice.setDueDate(LocalDate.now());
-            invoiceRepository.save(newInvoice);
-            */
+
             invoice.setPaidAmount(updatedPaid);
             invoice.setStatus(Invoice.Status.PENDING);
 
@@ -78,8 +71,6 @@ public class PaymentServiceImpl implements PaymentService {
             invoice.setStatus(Invoice.Status.PAID);
             invoiceRepository.save(invoice);
         }
-
-
         return payment;
     }
 

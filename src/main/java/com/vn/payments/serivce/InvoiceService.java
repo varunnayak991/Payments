@@ -1,6 +1,7 @@
 package com.vn.payments.serivce;
 
 import com.vn.payments.entity.Invoice;
+import com.vn.payments.entity.Overdue;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,4 +16,6 @@ public interface InvoiceService {
     public Invoice createInvoice(Invoice invoice);
 
     public void deleteInvoice(UUID id);
+
+    public List<Invoice> processOverdue(Overdue overdue);
 }
