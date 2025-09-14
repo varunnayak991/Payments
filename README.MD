@@ -10,9 +10,11 @@ A Sample Invoice generator and payment aggregator with support for over-due days
 ### How To
 To build and run the application using docker compose run the command
 
-Prebuilt Image is deployed to Docker Hub as a public image at:
+A Prebuilt Image is deployed to Docker Hub at
 
 [varunnayak1991/payments-app](https://hub.docker.com/repository/docker/varunnayak1991/payments-app/)
+
+Pull the image and run or build the image locally using
 
 ```markdown
 docker-compose up --build
