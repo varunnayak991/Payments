@@ -8,7 +8,11 @@ A Sample Invoice generator and payment aggregator with support for over-due days
 * Overdue APIs for consolidating all overdue payments and moving validity, applying penalties
 
 ### How To
-To run the application using docker compose run the following command
+To build and run the application using docker compose run the command
+
+Prebuilt Image is deployed to Docker Hub as a public image at:
+
+[varunnayak1991/payments-app](https://hub.docker.com/repository/docker/varunnayak1991/payments-app/)
 
 ```markdown
 docker-compose up --build
@@ -18,7 +22,7 @@ To Test the APIs
 
 * [Swagger](http://localhost:8080/swagger-ui/index.html)
 *  [Open-API specs](http://localhost:8080/v3/api-docs)
-* Use curl
+*  curl
 
 ### Basic API Operations
 
