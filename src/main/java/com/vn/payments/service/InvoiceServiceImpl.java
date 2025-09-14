@@ -1,7 +1,7 @@
-package com.vn.payments.serivce;
+package com.vn.payments.service;
 
-import com.vn.payments.entity.Invoice;
-import com.vn.payments.entity.Overdue;
+import com.vn.payments.model.Invoice;
+import com.vn.payments.model.Overdue;
 import com.vn.payments.repository.InvoiceRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,7 +1,8 @@
-package com.vn.payments.serivce;
+package com.vn.payments.service;
 
-import com.vn.payments.entity.Invoice;
-import com.vn.payments.entity.Payment;
+import com.vn.payments.exception.PaymentException;
+import com.vn.payments.model.Invoice;
+import com.vn.payments.model.Payment;
 import com.vn.payments.repository.InvoiceRepository;
 import com.vn.payments.repository.PaymentRepository;
 import jakarta.transaction.Transactional;
@@ -9,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -26,13 +26,13 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Override
     @Transactional
-    public Payment createPayment(UUID invoiceId, Payment payment) throws IllegalArgumentException {
+    public Payment createPayment(UUID invoiceId, Payment payment) throws PaymentException {
 
         Optional<Invoice> optInvoice = invoiceRepository.findById(invoiceId);
 
         if(! optInvoice.isPresent())
         {
-            throw new IllegalArgumentException("Invoice not found with ID: " + invoiceId);
+            throw new PaymentException("Invoice not found with ID: " + invoiceId);
         }
 
         Invoice invoice = optInvoice.get();
@@ -41,12 +41,12 @@ public class PaymentServiceImpl implements PaymentService {
         BigDecimal paid = invoice.getPaidAmount();
         BigDecimal remaining = amount.subtract(paid);
 
-        if(remaining.floatValue() <= 0 ) throw new IllegalArgumentException("Invoice already paid, Invoice Id:"+ invoiceId);
+        if(remaining.floatValue() <= 0 ) throw new PaymentException("Invoice already paid, Invoice Id:"+ invoiceId);
 
         BigDecimal updatedPaid = paid.add(payment.getAmount());
         BigDecimal updatedRemaining = remaining.subtract(payment.getAmount());
 
-        if(updatedRemaining.floatValue() < 0 ) throw new IllegalArgumentException("Incorrect amount paid, remaining:"+remaining+", Invoice Id:"+ invoiceId);
+        if(updatedRemaining.floatValue() < 0 ) throw new PaymentException("Incorrect amount paid, remaining:"+remaining+", Invoice Id:"+ invoiceId);
 
         if(updatedRemaining.floatValue() > 0 ) {
 
@@ -75,10 +75,10 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
 
-    public List<Payment> getPayment(UUID invoiceId) throws IllegalArgumentException {
+    public List<Payment> getPayment(UUID invoiceId) throws PaymentException {
 
         Invoice invoice = invoiceRepository.findById(invoiceId)
-                .orElseThrow(() -> new IllegalArgumentException("Invoice not found with ID: " + invoiceId));
+                .orElseThrow(() -> new PaymentException("Invoice not found with ID: " + invoiceId));
 
         return invoice.getPayments();
 

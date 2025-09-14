@@ -1,4 +1,4 @@
-package com.vn.payments.entity;
+package com.vn.payments.model;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

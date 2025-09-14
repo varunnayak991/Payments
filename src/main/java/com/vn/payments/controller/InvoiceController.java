@@ -1,10 +1,11 @@
 package com.vn.payments.controller;
 
-import com.vn.payments.entity.Invoice;
-import com.vn.payments.entity.Overdue;
-import com.vn.payments.entity.Payment;
-import com.vn.payments.serivce.InvoiceService;
-import com.vn.payments.serivce.PaymentService;
+import com.vn.payments.exception.PaymentException;
+import com.vn.payments.model.Invoice;
+import com.vn.payments.model.Overdue;
+import com.vn.payments.model.Payment;
+import com.vn.payments.service.InvoiceService;
+import com.vn.payments.service.PaymentService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,13 +49,13 @@ public class InvoiceController {
 
     @PostMapping("/invoice/{invoiceId}/payments")
     @Operation(summary = "Create an Payment", description = "Create a payment against an Invoice.")
-    public @ResponseBody Payment postPayment(@RequestBody Payment payment, @PathVariable UUID invoiceId) throws IllegalArgumentException{
+    public @ResponseBody Payment postPayment(@RequestBody Payment payment, @PathVariable UUID invoiceId) throws PaymentException{
        return paymentService.createPayment(invoiceId,payment);
     }
 
     @GetMapping("/invoice/{invoiceId}/payments")
     @Operation(summary = "Gets Payment for an ivoice", description = "Gets  payment against an Invoice.")
-    public @ResponseBody List<Payment> getAllPayments(@PathVariable UUID invoiceId){
+    public @ResponseBody List<Payment> getAllPayments(@PathVariable UUID invoiceId) throws PaymentException {
         return paymentService.getPayment(invoiceId);
     }
 

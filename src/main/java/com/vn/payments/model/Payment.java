@@ -1,4 +1,4 @@
-package com.vn.payments.entity;
+package com.vn.payments.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;

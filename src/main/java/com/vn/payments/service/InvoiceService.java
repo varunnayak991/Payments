@@ -1,8 +1,7 @@
-package com.vn.payments.serivce;
+package com.vn.payments.service;
 
-import com.vn.payments.entity.Invoice;
-import com.vn.payments.entity.Overdue;
-import org.springframework.stereotype.Service;
+import com.vn.payments.model.Invoice;
+import com.vn.payments.model.Overdue;
 
 import java.util.List;
 import java.util.Optional;
