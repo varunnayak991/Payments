@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -28,12 +29,16 @@ public class Invoice {
     @GeneratedValue(generator = "UUID")
     private UUID id;
 
+    @JsonProperty("amount")
     private BigDecimal amount;
 
+    @JsonProperty("paid_amount")
     private BigDecimal paidAmount = BigDecimal.ZERO;
 
+    @JsonProperty("due_date")
     private LocalDate dueDate;
 
+    @JsonProperty("status")
     private Status status = Status.PENDING;
 
     @OneToMany

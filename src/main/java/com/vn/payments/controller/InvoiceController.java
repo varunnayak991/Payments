@@ -7,6 +7,9 @@ import com.vn.payments.model.Payment;
 import com.vn.payments.service.InvoiceService;
 import com.vn.payments.service.PaymentService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -25,7 +28,21 @@ public class InvoiceController {
     PaymentService paymentService;
 
     @PostMapping("/invoice")
-    @Operation(summary = "Create an invoice", description = "Create a new invoice.")
+    @Operation(summary = "Create an invoice", description = "Create a new invoice.",
+                requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                required = true,
+                description = "Invoice Request",
+                content = @Content(
+                    schema = @Schema(implementation = Invoice.class),
+                    examples = {
+                    @ExampleObject(
+                            name = "Invoice creation example",
+                            summary = "A standard invoice request body.",
+                            value = "{\n  \"amount\": 100,\n  \"due_date\": \"2025-09-16\"\n}"
+                    )
+                    }
+               ))
+    )
     public @ResponseBody Invoice postInvoice(@RequestBody Invoice invoice) {
         return invoiceService.createInvoice(invoice);
     }
@@ -48,7 +65,21 @@ public class InvoiceController {
     }
 
     @PostMapping("/invoice/{invoiceId}/payments")
-    @Operation(summary = "Create an Payment", description = "Create a payment against an Invoice.")
+    @Operation(summary = "Create an Payment", description = "Create a payment against an Invoice.",
+            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    required = true,
+                    description = "Payment Request",
+                    content = @Content(
+                            schema = @Schema(implementation = Payment.class),
+                            examples = {
+                                    @ExampleObject(
+                                            name = "Payment creation example",
+                                            summary = "A standard payment request body.",
+                                            value = "{\n  \"amount\": 100\n}"
+                                    )
+                            }
+                    ))
+    )
     public @ResponseBody Payment postPayment(@RequestBody Payment payment, @PathVariable UUID invoiceId) throws PaymentException{
        return paymentService.createPayment(invoiceId,payment);
     }
@@ -60,7 +91,24 @@ public class InvoiceController {
     }
 
     @GetMapping("/invoice/process-overdue")
-    @Operation(summary = "Process overdue invoices", description = "Processes all the overdue invoices, applies fees and pushes days")
+    @Operation(summary = "Process overdue invoices", description = "Processes all the overdue invoices, applies fees and pushes days.",
+            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    required = true,
+                    description = "Overdue Parameter Request",
+                    content = @Content(
+                            schema = @Schema(implementation = Overdue.class),
+                            examples = {
+                                    @ExampleObject(
+                                            name = "Overdue request example",
+                                            summary = "A standard overdue request body.",
+                                            value = "{ \n" +
+                                                    "  \"late_fee\": 50,\n" +
+                                                    "  \"overdue_days\": 10\n" +
+                                                    "}"
+                                    )
+                            }
+                    ))
+    )
     public @ResponseBody List<Invoice> processOverdue(Overdue overdue){
         return invoiceService.processOverdue(overdue);
     }

@@ -1,6 +1,7 @@
 package com.vn.payments.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -18,6 +19,7 @@ public class Payment {
 
     @Id
     @GeneratedValue(generator = "UUID")
+    @JsonProperty("id")
     private UUID paymentId;
 
     @ManyToOne
